@@ -1,9 +1,11 @@
 import sys
 import serial
 import time
-ser = serial.Serial('/dev/cu.usbmodem1451', 9600)
+ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 incomingMessage = "11101010"
 endofMessage = "00010101"
+
+f = open('log', 'w')
 
 def write():
     def toBinary(message):
@@ -33,6 +35,7 @@ def write():
         print final
         return final
     messageRaw = raw_input('Enter Your Message Here: ')
+    f.write(">> You: " + messageRaw +"\n")
     time.sleep(5)
     message = incomingMessage + toBinary(messageRaw) + endofMessage
     counter = 1
@@ -73,9 +76,14 @@ def read():
             final = final+x
 
         return final
-    # if ser.available() > 0:
-    message = ser.read()
-    output = toString(message)
-    print output
-write()
-# abcdefghijklmnopqrstuvwxyz
+    binary = ser.read(8)
+    counter = 0
+    while binary[-8:] != endofMessage:
+        counter = counter +1
+        binary += ser.read(8)
+    message = toString(binary[8:])
+    f.write("Olivia said: " + message + "\n")
+
+while True:
+    write()
+    # read()

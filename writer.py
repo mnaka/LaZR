@@ -1,9 +1,11 @@
 import sys
 import serial
 import time
-ser = serial.Serial('/dev/cu.usbmodem1451', 9600)
+ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 incomingMessage = "11101010"
 endofMessage = "00010101"
+
+f = open('log', 'w')
 
 def write():
     def toBinary(message):
@@ -34,15 +36,16 @@ def write():
         return final
     messageRaw = raw_input('Enter Your Message Here: ')
     time.sleep(5)
-    message = incomingMessage + toBinary(messageRaw) + endofMessage
+    f.write(">> You: " + messageRaw +"\n")
+    message = incomingMessage + toBinary(messageRaw) + "0000000000000000"
+    print message
     counter = 1
     while len(message) > 0:
         print counter
         counter = counter + 1
         ser.write(message[:8])
-        time.sleep(0.25)
         message = message[8:]
-
+        # time.sleep()
 
 def read():
     def toString(numbers):
@@ -54,8 +57,8 @@ def read():
 
         #splitting binary for conversion
         for i in range(0,len(numbers), 8):
-                tmp = i
-                binary.append(numbers[tmp: tmp+8])
+            tmp = i
+            binary.append(numbers[tmp: tmp+8])
 
         #binary -> decimal
         for x in binary:
@@ -73,9 +76,14 @@ def read():
             final = final+x
 
         return final
-    # if ser.available() > 0:
-    message = ser.read()
-    output = toString(message)
-    print output
-write()
-# abcdefghijklmnopqrstuvwxyz
+    binary = ser.read(8)
+    counter = 0
+    while binary[-8:] != endofMessage:
+        counter = counter +1
+        binary += ser.read(8)
+    message = toString(binary[8:])
+    f.write("Olivia said: " + message + "\n")
+
+while True:
+    write()
+    # read()
