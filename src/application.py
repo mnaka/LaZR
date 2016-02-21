@@ -11,15 +11,22 @@ class Application(QtGui.QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super(Application, self).__init__(parent)
         self.setupUi(self)
-        # self.DeviceInterface = put interface here
+        self.DeviceInterface = None
         self.ConsoleDisplay.setReadOnly(True)
         self.ConnectDevice.triggered.connect(self.DeviceConnect)
         self.InputArea.returnPressed.connect(self.SubmitMessage)
         self.Interface = interface.Interface(filename)
-        self.UserString = "you>> "
-        self.IncomingString = "them>> "
+        self.UserString = "You >> "
+        self.IncomingString = "Them >> "
+        self.MessageString = "Message >> "
 
     def DeviceConnect(self):
+        portname, ok = QtGui.QInputDialog.getText(self, 'Connect Device', 'Enter Device port (eg. /dev/ttyACM0):')
+        if ok:
+            print(portname)
+            self.DeviceInterface = interface.Interface(str(portname))
+            self.ConsoleDisplay.appendPlainText(self.MessageString + "Device Connected")
+
         return
 
     def SubmitMessage(self):
