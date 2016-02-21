@@ -11,15 +11,26 @@ void setup() {
 }
 
 void loop() {
+  int counter = 0;
   while (Serial.available() > 0){
+    counter++;
     if(Serial.read() == '0'){
       digitalWrite(laser, LOW);
     }
     else{
       digitalWrite(laser, HIGH);
     }
-    delay(1000);
+    delay(5);
+    sensorValue = analogRead(photoresistor);
+//    Serial.println(sensorValue);
+    if (sensorValue < 75){
+      readings += "1";
+    }
+    else{
+      readings += "0";
+    }
   }
-  Serial.write("I received this message");
+  delay(5);
+  Serial.println(readings);
 }
 
