@@ -5,8 +5,6 @@ from PyQt4 import QtGui				# Import PyQt module
 import mainwindow                   # import gui
 import interface                    # import hardware interface
 
-filename = "/dev/ttyACM0"
-
 class Application(QtGui.QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super(Application, self).__init__(parent)
@@ -15,7 +13,6 @@ class Application(QtGui.QMainWindow, mainwindow.Ui_MainWindow):
         self.ConsoleDisplay.setReadOnly(True)
         self.ConnectDevice.triggered.connect(self.DeviceConnect)
         self.InputArea.returnPressed.connect(self.SubmitMessage)
-        self.Interface = interface.Interface(filename)
         self.UserString = "You >> "
         self.IncomingString = "Them >> "
         self.MessageString = "Message >> "
