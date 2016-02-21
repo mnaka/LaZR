@@ -6,8 +6,8 @@ class Interface():
         self.serialport = serial.Serial(device_file)
         self.input_string = ""
         self.output_string = ""
-        self.message_header = #
-        self.message_footer = #
+        self.message_header = '11101010'
+        self.message_footer = '00010101\n'
 
     def read_from_photodiode(self):
         # (1) read from serialport
@@ -16,9 +16,9 @@ class Interface():
         return
 
     def write_to_laser(self, string):
-        message = self.message_header + toBinary(string) + self.message_footer
+        message = self.message_header + self.asciitobinary(string) + self.message_footer
         while len(message) > 0:
-            ser.write(message[:8])
+            self.serialport.write(message[:8])
             message = message[9:]
         return
 
@@ -30,13 +30,13 @@ class Interface():
         # binary to string conversion
         pass
 
-    def ASCIItoBinary(string):
+    def ASCIItoBinary(self, string):
         asc = []
         binary = []
         answer = []
         final = ""
         #char -> ascii
-        for x in message:
+        for x in string:
             asc.append(ord(x))
         #ascii -> binary
         for x in asc:

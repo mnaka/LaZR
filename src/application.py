@@ -23,13 +23,13 @@ class Application(QtGui.QMainWindow, mainwindow.Ui_MainWindow):
             print(portname)
             self.DeviceInterface = interface.Interface(str(portname))
             self.ConsoleDisplay.appendPlainText(self.MessageString + "Device Connected")
-
         return
 
     def SubmitMessage(self):
         text = self.InputArea.displayText()
         self.ConsoleDisplay.appendPlainText(self.UserString + text)
         self.InputArea.setText("")
+        self.DeviceInterface.write_to_laser(str(text))
         return
 
 
