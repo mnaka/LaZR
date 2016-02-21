@@ -1,4 +1,4 @@
-int laser = 11;
+int laser = 13;
 int photoresistor = A5;
 int sensorValue = 0;
 String readings = "";
@@ -18,7 +18,7 @@ void loop() {
     else{
       digitalWrite(laser, HIGH);
     }
-    delay(1000);
+    delay(1);
   }
   Serial.write("I received this message");
 }
