@@ -1,5 +1,6 @@
 import serial
 import time
+import sys
 
 class Interface():
     def __init__(self, device_file):
@@ -13,7 +14,7 @@ class Interface():
         return
 
     def write_to_laser(self, string):
-        message = string + r'\n'
+        message = string + '\n'
         self.serialport.write(message)
         return
 
@@ -27,5 +28,5 @@ class Interface():
 
 if __name__ == "__main__":
     interface = Interface('/dev/ttyACM0')
-    interface.write_to_laser('this \n')
+    interface.write_to_laser(sys.argv[1])
     
