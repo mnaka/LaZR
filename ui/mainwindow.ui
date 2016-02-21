@@ -27,6 +27,13 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="ListenButton">
+        <property name="text">
+         <string>Listen for Message</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -37,7 +44,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

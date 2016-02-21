@@ -4,33 +4,28 @@ class Interface():
     def __init__(self, device_file):
         self.device_file = device_file
         self.serialport = serial.Serial(device_file)
-        self.input_string = ""
-        self.output_string = ""
-        self.message_header = #
-        self.message_footer = #
+        self.message_header = "11101010"
+        self.message_footer = "00010101"
 
     def read_from_photodiode(self):
-        # (1) read from serialport
-        # (2) parse and covert to string
-        # (3) set string to self.output_string
-        return
+        binary = self.serialport.read(8)
+        counter = 0
+        while binary[-8:] != endofMessage:
+            counter = counter +1
+            binary += ser.read(8)
+            message = toString(binary[8:])
+        return message
 
     def write_to_laser(self, string):
-        message = self.message_header + toBinary(string) + self.message_footer
+        message = self.message_header + self.toBinary(string) + "0000000000000000"
+        counter = 1
         while len(message) > 0:
-            ser.write(message[:8])
-            message = message[9:]
+            counter = counter + 1
+            self.serialport.write(message[:8])
+            message = message[8:]
         return
 
-    def string_to_binary(self, string):
-        # string to binary conversion
-        pass
-
-    def binary_to_string(self, binary):
-        # binary to string conversion
-        pass
-
-    def ASCIItoBinary(string):
+    def toBinary(message):
         asc = []
         binary = []
         answer = []
@@ -38,16 +33,36 @@ class Interface():
         #char -> ascii
         for x in message:
             asc.append(ord(x))
-        #ascii -> binary
         for x in asc:
             binary.append("{0:b}".format(x))
-        #formatting binary
         for x in binary:
             temp = x;
+            temp = temp[::-1]
             while len(temp) < 8:
                 temp += "0"
             temp = temp[::-1]
             answer.append(temp)
         for x in answer:
             final = final + x
+        return final
+
+    def toString(numbers):
+        binary = []
+        decimal = []
+        answer = []
+        final = ""
+        tmp = 0;
+        for i in range(0,len(numbers), 8):
+            tmp = i
+            binary.append(numbers[tmp: tmp+8])
+        for x in binary:
+            tmp =0
+            for y in x:
+                tmp=tmp*2+int(y)
+            decimal.append(tmp)
+        for x in decimal:
+            answer.append(chr(x))
+        for x in answer:
+            final = final+x
+
         return final

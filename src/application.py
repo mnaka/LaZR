@@ -13,6 +13,7 @@ class Application(QtGui.QMainWindow, mainwindow.Ui_MainWindow):
         self.ConsoleDisplay.setReadOnly(True)
         self.ConnectDevice.triggered.connect(self.DeviceConnect)
         self.InputArea.returnPressed.connect(self.SubmitMessage)
+        self.ListenButton.clicked.connect(self.ReadMessage)
         self.UserString = "You >> "
         self.IncomingString = "Them >> "
         self.MessageString = "Message >> "
@@ -27,11 +28,24 @@ class Application(QtGui.QMainWindow, mainwindow.Ui_MainWindow):
         return
 
     def SubmitMessage(self):
+        if self.DeviceInterface == None :
+            self.ConsoleDisplay.appendPlainText(
+                self.MessageString + "ERROR: No device connected")
+            return
         text = self.InputArea.displayText()
         self.ConsoleDisplay.appendPlainText(self.UserString + text)
         self.InputArea.setText("")
+        self.DeviceInterface.write_to_laser(str(text))
         return
 
+    def ReadMessage(self):
+        if self.DeviceInterface == None :
+            self.ConsoleDisplay.appendPlainText(
+                self.MessageString + "ERROR: No device connected")
+            return
+        text = self.DeviceInterface.read_from_photodiode()
+        self.ConsoleDisplay.appendPlainText(self.IncomingString + text)
+        return
 
 def main():
     app = QtGui.QApplication(sys.argv)

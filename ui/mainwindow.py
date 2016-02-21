@@ -39,10 +39,13 @@ class Ui_MainWindow(object):
         self.ConsoleDisplay.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.ConsoleDisplay.setObjectName(_fromUtf8("ConsoleDisplay"))
         self.gridLayout.addWidget(self.ConsoleDisplay, 0, 0, 1, 1)
+        self.ListenButton = QtGui.QPushButton(self.centralwidget)
+        self.ListenButton.setObjectName(_fromUtf8("ListenButton"))
+        self.gridLayout.addWidget(self.ListenButton, 2, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 23))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -61,6 +64,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
+        self.ListenButton.setText(_translate("MainWindow", "Listen for Message", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.ConnectDevice.setText(_translate("MainWindow", "Connect Device ...", None))
 
