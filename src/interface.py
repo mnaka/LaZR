@@ -1,13 +1,10 @@
 import serial
+import time
 
 class Interface():
     def __init__(self, device_file):
         self.device_file = device_file
         self.serialport = serial.Serial(device_file)
-        self.input_string = ""
-        self.output_string = ""
-        self.message_header = '11101010'
-        self.message_footer = '00010101\n'
 
     def read_from_photodiode(self):
         # (1) read from serialport
@@ -16,10 +13,8 @@ class Interface():
         return
 
     def write_to_laser(self, string):
-        message = self.message_header + self.asciitobinary(string) + self.message_footer
-        while len(message) > 0:
-            self.serialport.write(message[:8])
-            message = message[9:]
+        message = string + r'\n'
+        self.serialport.write(message)
         return
 
     def string_to_binary(self, string):
@@ -30,24 +25,7 @@ class Interface():
         # binary to string conversion
         pass
 
-    def ASCIItoBinary(self, string):
-        asc = []
-        binary = []
-        answer = []
-        final = ""
-        #char -> ascii
-        for x in string:
-            asc.append(ord(x))
-        #ascii -> binary
-        for x in asc:
-            binary.append("{0:b}".format(x))
-        #formatting binary
-        for x in binary:
-            temp = x;
-            while len(temp) < 8:
-                temp += "0"
-            temp = temp[::-1]
-            answer.append(temp)
-        for x in answer:
-            final = final + x
-        return final
+if __name__ == "__main__":
+    interface = Interface('/dev/ttyACM0')
+    interface.write_to_laser('this \n')
+    
