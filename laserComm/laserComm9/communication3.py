@@ -73,9 +73,13 @@ def read():
             final = final+x
 
         return final
-    # if ser.available() > 0:
-    message = ser.read()
-    output = toString(message)
-    print output
-write()
+    binary = ser.read(8)
+    counter = 0
+    while binary[-8:] != endofMessage:
+        counter = counter +1
+        binary += ser.read(8)
+    message = toString(binary[8:])
+    print(message)
+
+
 # abcdefghijklmnopqrstuvwxyz
